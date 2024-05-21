@@ -7,4 +7,6 @@
 
 - due to time the where some animation that where not completed but can be implemented 
 
+- the code can be much more cleaner and refactored for readablity than what i have now
+
 
