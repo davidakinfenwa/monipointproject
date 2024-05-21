@@ -1,16 +1,10 @@
 # monipointproject
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## NOTE
+- The UI/UX can be much more better if figma design was available to get the exact dimensions
 
-A few resources to get you started if this is your first Flutter project:
+- due to time the where some animation that where not completed but can be implemented 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
