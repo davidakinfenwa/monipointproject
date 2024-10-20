@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter/animation.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:monipointproject/core/theme.dart';
+import 'package:monipointproject/presentation/widget/animationManager.dart';
 import 'package:monipointproject/presentation/widget/backdrop.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,134 +15,30 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  late AnimationController _controller;
-  late AnimationController _controllerImage;
-  late Animation<double> _widthAnimation;
-  late Animation<double> _opacityAnimation;
-  late Animation<double> _profileImageAnimation;
-  late Animation<double> _mainTextAnimation;
-  late Animation<double> _countAnimation;
-  late Animation<double> _count2Animation;
-  late Animation<double> _sizeAnimation;
-  late Animation<double> _scaleAnimation;
+    late AnimationManager _animationManager;
+      late AnimationController _controllerImage;
 
-  late Animation<Offset> _slideAnimation;
-
-  final int initialCount = 100;
-  final int target2Count = 2212;
-  final int targetCount = 1034;
-  final double initialSize = 0.0;
-  final double targetSize = 150.0;
-  final double initialScale = 0.0;
-  final double targetScale = 1.0;
-  @override
+      @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 2), // Adjust the duration as needed
-    );
-    _controllerImage = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5), // Adjust the duration as needed
-    );
-
-    _widthAnimation = Tween<double>(
-      begin: 0,
-      end: 170, // Adjust the final width of the container
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0, 0.5,
-          curve: Curves.easeInOut), // Adjust the curve and interval as needed
-    ));
-
-    _opacityAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.5, 1,
-          curve: Curves.easeInOut), // Adjust the curve and interval as needed
-    ));
-
-    _profileImageAnimation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(
-        //_controllerImage
-        CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.5, 1,
-          curve: Curves.easeInOut), // Adjust the curve and interval as needed
-    ));
-
-    _mainTextAnimation = Tween<double>(
-      begin: 1,
-      end: 0,
-    ).animate(
-      CurvedAnimation(
-        parent: _controller,
-        curve: const Interval(0, 0.5, curve: Curves.easeInOut),
-      ),
-    );
-
-    _countAnimation = Tween<double>(
-      begin: initialCount.toDouble(),
-      end: targetCount.toDouble(),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-    _count2Animation = Tween<double>(
-      begin: initialCount.toDouble(),
-      end: target2Count.toDouble(),
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-
-    _sizeAnimation = Tween<double>(
-      begin: initialSize,
-      end: targetSize,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-
-    _scaleAnimation = Tween<double>(
-      begin: initialScale,
-      end: targetScale,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(-1.0, 0.0), // Slide in from the left
-      end: const Offset(0.0, 0.0), // Slide to the center
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    ));
-
-    _controllerImage.forward();
-    _controller.forward();
-    _updateImageContainer(); // Start the animation
+    _animationManager = AnimationManager();
+    _animationManager.initializeAnimations(this);
+    _controllerImage = AnimationController(vsync: this,duration: const Duration(seconds: 5), );
+      _controllerImage.forward();
+     _updateImageContainer();
   }
 
   @override
   void dispose() {
+    _animationManager.dispose();
     _controllerImage.dispose();
-    _controller.dispose();
     super.dispose();
   }
+ 
 
   double _width = 0;
   double _height = 0;
-
   double _widthcon = 0;
-  double _heightcon = 0;
-
   void _updateImageContainer() {
     if (_width == 0) {
       setState(() {
@@ -152,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     if (_widthcon == 0) {
       setState(() {
         _widthcon = 150;
-        _heightcon = 150;
       });
     }
   }
@@ -162,7 +58,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Scaffold(
       body: Container(
         width: MediaQuery.sizeOf(context).width,
-        //
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -188,13 +83,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget _buildBottomCardSection() {
     return Expanded(
             child: AnimatedBuilder(
-                animation: _controller,
+                animation: _animationManager.controller,
                 builder: (context, child) {
                   return Transform.translate(
-                    offset: Offset(
-                        0.0,
-                        MediaQuery.of(context).size.height *
-                            _mainTextAnimation.value),
+                    offset: Offset(0.0, MediaQuery.of(context).size.height * _animationManager.mainTextAnimation.value),
                     child: Container(
                       width: MediaQuery.sizeOf(context).width,
                       height: MediaQuery.of(context).size.height * 0.1,
@@ -228,30 +120,53 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     AnimatedBuilder(
-                      animation: _controller,
+                      animation: _animationManager.controller,
                       builder: (context, child) {
                         return Container(
-                          width: _widthAnimation.value,
-                          padding: const EdgeInsets.fromLTRB(10, 15, 10,
-                              15), // Adjust the height of the container
+                          width: _animationManager.widthAnimation.value,
+                          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 15), // Adjust the height of the container
                           decoration: BoxDecoration(
                             color: Colors.white,
+                          //    gradient: LinearGradient(
+                          //   colors: [
+                          //     Color(0xFFfffff).withOpacity(0.2),
+                          //     Color(0xFFfedbb1).withOpacity(0.2),
+                          //   ],
+                          //   begin: FractionalOffset(0.0, 0.0),
+                          //   end: FractionalOffset(1.0, 2.0),
+                          //   stops: [0.0, 1.0],
+                          //   tileMode: TileMode.mirror,
+                          // ),
+                           boxShadow: [
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.01),
+                              spreadRadius: 1,
+                              blurRadius: 3,
+                            ),
+                          ],
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Opacity(
-                            opacity: _opacityAnimation.value,
-                            child: const Row(
+                            opacity: _animationManager.opacityAnimation.value,
+                            child:  Row(
                               children: [
-                                Icon(
-                                  Icons.place,
+                                SvgPicture.asset(
+                                  "assets/svgs/locationicon.svg",
                                   color: Colors.grey,
+                                   width: 16,
+                                   height: 16,
                                 ),
-                                Text(
-                                  'Saint Petersburg',
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                      fontFamily: "lato"),
+                                const SizedBox(width: 5,),
+                                Expanded(
+                                  child: Text(
+                                    'Saint Petersburg',
+                                    style: TextStyle(
+                                        fontSize: 14.sp,
+                                        color: Colors.grey,
+                                        fontWeight:FontWeight.w500,
+                                        fontFamily: FontFamilyy.normal
+                                        ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -261,18 +176,25 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     
                     AnimatedBuilder(
-                        animation: _controllerImage,
+                        animation: _animationManager.controllerImage,
                         builder: (context, child) {
                           return AnimatedContainer(
                             duration: const Duration(milliseconds: 150),
-                            width: _width * _profileImageAnimation.value,
-                            height: _height * _profileImageAnimation.value,
-                            decoration: const BoxDecoration(
+                            width: _width * _animationManager.profileImageAnimation.value,
+                            height: _height * _animationManager.profileImageAnimation.value,
+                            decoration:  BoxDecoration(
+                                gradient: LinearGradient(
+                                colors: [
+                                  const Color(0xffd75e0e),
+                                  AppColors.primaryColor,
+                                ],
+                                // begin: FractionalOffset(0.0, 0.0),
+                                // end: FractionalOffset(1.0, 2.0),
+                                stops: [-8.0, 10.0],
+                                tileMode: TileMode.mirror,
+                              ),
                                 shape: BoxShape.circle,
-                                //color: Colors.blue,
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                        "assets/images/profileimg.png")) // Placeholder color, replace with your image
+                                image: const DecorationImage(image: AssetImage("assets/images/profile.png")) // Placeholder color, replace with your image
                                 ),
                           );
                         }),
@@ -282,22 +204,22 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   height: 20,
                 ),
                 AnimatedBuilder(
-                    animation: _controller,
+                    animation: _animationManager.controller,
                     builder: (context, child) {
                       return Opacity(
-                        opacity: _opacityAnimation.value,
-                        child: const Text(
+                        opacity: _animationManager.opacityAnimation.value,
+                        child:  Text(
                           'Hi, Marina',
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 20.sp,
                               color: Colors.grey,
-                              fontFamily: "lato"),
+                              fontFamily: FontFamilyy.regular),
                         ),
                       );
                     }),
                 //const SizedBox( height: 1, ),
                 AnimatedBuilder(
-                    animation: _controller,
+                    animation: _animationManager.controller,
                     builder: (context, child) {
                       return Container(
                         child: Transform.translate(
@@ -305,18 +227,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               0.0,
                               MediaQuery.of(context).size.height *
                                   0.1 *
-                                  _mainTextAnimation.value),
+                                  _animationManager.mainTextAnimation.value),
                           // Adjust the distance
                           child: Opacity(
-                            opacity: 1 - (_mainTextAnimation.value * 0.5),
-                            child: const SizedBox(
+                            opacity: 1 - (_animationManager.mainTextAnimation.value * 0.5),
+                            child:  SizedBox(
                               width: 250,
                               child: Text(
                                 'let\'s select your perfect place',
                                 style: TextStyle(
                                     fontSize: 30,
-                                    color: Colors.black,
-                                    fontFamily: "lato"),
+                                    height: 1.12,
+                                    color: AppColors.secondaryColor,
+                                    fontFamily: FontFamilyy.normal),
                               ),
                             ),
                           ),
@@ -327,18 +250,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   height: 12,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AnimatedBuilder(
-                      animation: _controller,
+                      animation: _animationManager.controller,
                       builder: (context, child) {
                         return Transform.scale(
-                          scale: _scaleAnimation.value,
+                          scale: _animationManager.scaleAnimation.value,
                           child: Container(
                             width: 150,
                             height: 150,
-                            decoration: const BoxDecoration(
-                              color: Color(0xfffca717),
+                            decoration:  BoxDecoration(
+                              color: AppColors.primaryColor,
                               shape: BoxShape.circle,
                             ),
                             child: Column(
@@ -350,7 +273,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   "Buy",
                                   style: TextStyle(
                                     fontSize: 16,
-                                    fontFamily: "lato",
+                                    fontFamily: FontFamilyy.regular,
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white,
                                   ),
@@ -359,10 +282,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   height: 14,
                                 ),
                                 Text(
-                                  _countAnimation.value.toInt().toString(),
+                                  _animationManager.countAnimation.value.toInt().toString(),
                                   style: const TextStyle(
                                     fontSize: 32,
-                                    fontFamily: "lato",
+                                    fontFamily: FontFamilyy.regular,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
                                   ),
@@ -371,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   "offers",
                                   style: TextStyle(
                                     fontSize: 16,
-                                    fontFamily: "lato",
+                                    fontFamily: FontFamilyy.regular,
                                     fontWeight: FontWeight.w400,
                                     color: Colors.white,
                                   ),
@@ -382,11 +305,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         );
                       },
                     ),
+                    const SizedBox(width: 10,),
                     AnimatedBuilder(
-                      animation: _controller,
+                      animation: _animationManager.controller,
                       builder: (context, child) {
                         return Transform.scale(
-                          scale: _scaleAnimation.value,
+                          scale: _animationManager.scaleAnimation.value,
                           child: Container(
                             width: 150,
                             height: 150,
@@ -405,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   "Rent",
                                   style: TextStyle(
                                     fontSize: 16,
-                                    fontFamily: "lato",
+                                    fontFamily: FontFamilyy.regular,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xffb0987f),
                                   ),
@@ -414,10 +338,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   height: 14,
                                 ),
                                 Text(
-                                  _count2Animation.value.toInt().toString(),
+                                  _animationManager.count2Animation.value.toInt().toString(),
                                   style: const TextStyle(
                                     fontSize: 32,
-                                    fontFamily: "lato",
+                                    fontFamily: FontFamilyy.regular,
                                     fontWeight: FontWeight.w700,
                                     color: Color(0xffb0987f),
                                   ),
@@ -426,7 +350,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   "offers",
                                   style: TextStyle(
                                     fontSize: 16,
-                                    fontFamily: "lato",
+                                    fontFamily: FontFamilyy.regular,
                                     fontWeight: FontWeight.w400,
                                     color: Color(0xffb0987f),
                                   ),
@@ -456,7 +380,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 height: MediaQuery.sizeOf(context).height * 0.3,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/images/bedroom.jpg"),
+                    image: AssetImage("assets/images/hotleroom.png"),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -467,47 +391,68 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 right: 0,
                 left: 0,
                 child: Padding(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(10),
                   child: Glassmorphism(
-                    blur: 5,
-                    opacity: 0.2,
-                    radius: 16,
+                    blur: 10,
+                    opacity: 0.5,
+                    radius: 30,
                     child: SlideTransition(
-                      position: _slideAnimation,
+                      position: _animationManager.slideAnimation,
                       child: Container(
-                        decoration: ShapeDecoration(
-                            //color: Color.fromARGB(131, 0, 0, 0),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16))),
+                        height: 50,
+                        decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30)),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             AnimatedOpacity(
-                              opacity: _opacityAnimation.value,
+                              opacity: _animationManager.opacityAnimation.value,
                               duration: const Duration(seconds: 4),
                               child: Text('Gladkova st., 25',
                                   style: Theme.of(context)
                                       .textTheme
                                       .titleMedium
                                       ?.copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "lato")),
+                                          color: AppColors.secondaryColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: FontFamilyy.normal)),
                             ),
         
                             const SizedBox(
-                              width: 50,
+                              width: 40,
                             ),
-                            //Animate this container from the beginning of the row to the end  with a slide right
-                            Container(
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                    color: Colors.white, shape: BoxShape.circle),
-                                child: const Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                  size: 14,
-                                )),
+                            
+                            Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Container(
+                                width: 45,
+                                  decoration:  BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(42),
+                                        boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          spreadRadius: 1,
+                                          blurRadius: 6,
+                                          offset: const Offset(0.2, 0.4)
+                                        ),
+                                      ],
+                                      ),
+                                  child:  const Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Center(
+                                        child: Icon(
+                                          Icons.arrow_forward_ios_outlined,
+                                          size: 16,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
                           ],
                         ),
                       ),
@@ -517,7 +462,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
         SizedBox(height: 10.h,),
-
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -532,44 +476,39 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   height: MediaQuery.sizeOf(context).height * 0.4,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("assets/images/bedroom.jpg"),
+                      image: AssetImage("assets/images/hotelroom1.jpeg"),
                       fit: BoxFit.cover,
                     ),
                   ),
-                ),
-                            ),
-                            Positioned(
+                ),),
+                 Positioned(
                   bottom: 0,
                   right: 0,
                   left: 0,
                   child: Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: const EdgeInsets.symmetric(horizontal: 8,vertical: 8),
                     child: Glassmorphism(
                       blur: 5,
                       opacity: 0.2,
                       radius: 16,
                       child: SlideTransition(
-                        position: _slideAnimation,
+                        position: _animationManager.slideAnimation,
                         child: Container(
+                           height:  40.h,
                           decoration: ShapeDecoration(
-                              //color: Color.fromARGB(131, 0, 0, 0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16))),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               AnimatedOpacity(
-                                opacity: _opacityAnimation.value,
+                                opacity: _animationManager.opacityAnimation.value,
                                 duration: const Duration(seconds: 4),
-                                child: Text('Gladk st., 25',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: "lato")),
+                                child: Text('Gubina st., 11',
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.secondaryColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: FontFamilyy.normal,
+                                          fontSize: 14.sp)),
                               ),
                         
                               const SizedBox(
@@ -579,11 +518,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: const BoxDecoration(
-                                      color: Colors.white, shape: BoxShape.circle),
-                                  child: const Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    size: 14,
-                                  )),
+                                  color: Colors.white, shape: BoxShape.circle),
+                                  child: const Icon(Icons.arrow_forward_ios_outlined,size: 14,)),
                             ],
                           ),
                         ),
@@ -593,7 +529,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           ],
                         ),
               ),
-              SizedBox(width: 5,),
+      const SizedBox(width: 5,),
         Expanded(
           child: Column(children: [
               Stack(
@@ -605,7 +541,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   height: MediaQuery.sizeOf(context).height * 0.2,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("assets/images/bedroom.jpg"),
+                      image: AssetImage("assets/images/guest_room.jpg"),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -616,43 +552,37 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   right: 0,
                   left: 0,
                   child: Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding:const EdgeInsets.symmetric(horizontal: 4,vertical: 8),
                     child: Glassmorphism(
                       blur: 5,
                       opacity: 0.2,
                       radius: 16,
                       child: SlideTransition(
-                        position: _slideAnimation,
+                      position: _animationManager.slideAnimation,
                         child: Container(
                           decoration: ShapeDecoration(
-                              //color: Color.fromARGB(131, 0, 0, 0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16))),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                                const SizedBox(width: 3,),
                               AnimatedOpacity(
-                                opacity: _opacityAnimation.value,
+                                opacity: _animationManager.opacityAnimation.value,
                                 duration: const Duration(seconds: 4),
-                                child: Text('Glad st., 25',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: "lato")),
+                                child: Text('Trefoleva st., 43',
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.secondaryColor,fontWeight: FontWeight.w400,fontFamily: FontFamilyy.normal,fontSize: 13.sp)),
+
                               ),
           
                               const SizedBox(
-                                width: 25,
+                                width: 20,
                               ),
                               
                               Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: const BoxDecoration(
-                                      color: Colors.white, shape: BoxShape.circle),
+                                  color: Colors.white, shape: BoxShape.circle),
                                   child: const Icon(
                                     Icons.arrow_forward_ios_outlined,
                                     size: 14,
@@ -665,7 +595,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ))
             ],
           ),
-          SizedBox(height: 6,),
+          const SizedBox(height: 6,),
             Stack(
             children: [
               ClipRRect(
@@ -686,13 +616,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   right: 0,
                   left: 0,
                   child: Padding(
-                    padding: const EdgeInsets.all(15),
+                    padding: EdgeInsets.symmetric(horizontal: 4.h,vertical: 8.w),
                     child: Glassmorphism(
                       blur: 5,
                       opacity: 0.2,
                       radius: 16,
                       child: SlideTransition(
-                        position: _slideAnimation,
+                        position: _animationManager.slideAnimation,
                         child: Container(
                           decoration: ShapeDecoration(
                               //color: Color.fromARGB(131, 0, 0, 0),
@@ -703,20 +633,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               AnimatedOpacity(
-                                opacity: _opacityAnimation.value,
+                                opacity: _animationManager.opacityAnimation.value,
                                 duration: const Duration(seconds: 4),
-                                child: Text('Glad st., 25',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium
-                                        ?.copyWith(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: "lato")),
+                                child: Text('Sadova st., 22',
+                                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: AppColors.secondaryColor,fontWeight: FontWeight.w400,fontFamily: FontFamilyy.normal,fontSize: 13.sp)),
                               ),
           
                               const SizedBox(
-                                width: 25,
+                                width: 20,
                               ),
                             
                               Container(
@@ -738,7 +662,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],),
         )
           ],
-        )
+        ),
+        SizedBox(height: 50.h,)
       ],
     );
   }

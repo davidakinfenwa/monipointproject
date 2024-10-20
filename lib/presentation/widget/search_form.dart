@@ -1,6 +1,9 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:monipointproject/core/theme.dart';
 
 class SearchSection extends StatelessWidget {
   const SearchSection({
@@ -13,52 +16,37 @@ class SearchSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.only(top: 20),
       width: MediaQuery.sizeOf(context).width * 0.7,
-      height: 50.sp,
       child: TextFormField(
-        // focusNode: _searchTextFieldFocusNode,
-        // controller: _searchTextFieldController,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            fontWeight: FontWeight.w500,
-            color: const Color(0xffC0C0C0),
-            fontSize: 13.0.sp),
+       initialValue:  'Saint Petersburg',
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w500,color: AppColors.secondaryColor.withOpacity(0.8),fontSize: 13.0.sp),
         decoration: InputDecoration(
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          contentPadding: EdgeInsets.symmetric(horizontal: 19.h, vertical: 10.w),
           hintText: 'Search',
-          hintStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w500,
-              color: const Color(0xffC0C0C0),
-              fontSize: 18.0.sp),
+          hintStyle: Theme.of(context).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w500,color: const Color(0xffC0C0C0),fontSize: 18.0.sp),
           fillColor: Colors.grey[200],
           filled: true,
           isDense: true,
-          prefixIconConstraints:
-              const BoxConstraints(maxHeight: 100, maxWidth: 100),
-          prefixIcon: Transform.scale(
-              scale: .4,
-              child: const Icon(
-                Icons.search,
-                size: 50,
-              )),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(32),
-            borderSide: BorderSide.none,
+          
+          prefixIconConstraints:const BoxConstraints(maxHeight: 100, maxWidth: 100),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: SvgPicture.asset(
+              "assets/svgs/searchbar.svg",
+            color: AppColors.secondaryColor.withOpacity(0.8),
+            height:18 ,
+            width: 18,
+              //size: 50,
+            ),
           ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(32),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(32),
-            borderSide: BorderSide.none,
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(32),borderSide: BorderSide.none,),
+          enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32),borderSide: BorderSide.none,),
+          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32),borderSide: BorderSide.none,),
         ),
         onChanged: (value) {
           // snapshotCache.searchProductFromList(value);
         },
       ),
-    );
+    ).animate().fadeIn(delay:500.ms).moveX();
   }
 }

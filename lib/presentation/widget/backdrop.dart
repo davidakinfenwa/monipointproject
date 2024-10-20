@@ -26,7 +26,19 @@ class Glassmorphism extends StatelessWidget {
         child: Container(
           //padding: EdgeInsets.all(8 * 3),  
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(opacity),
+            color: Colors.black,
+            gradient: LinearGradient(
+            colors: [
+           // Colors.black.withOpacity(opacity),
+              Color(0xFFfefcfb).withOpacity(opacity),
+              Color(0xFFfedbb1).withOpacity(opacity),
+
+            ],
+            // begin: FractionalOffset(0.0, 0.0),
+            // end: FractionalOffset(1.0, 2.0),
+            stops: [0.0, 1.0],
+            tileMode: TileMode.mirror,
+          ),
             borderRadius: BorderRadius.all(Radius.circular(radius)),
             // border: Border.all(
             //   width: 1.5,

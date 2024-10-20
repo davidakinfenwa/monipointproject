@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:monipointproject/core/theme.dart';
 import 'package:monipointproject/presentation/share/tabscreen_provider.dart';
 import 'package:monipointproject/presentation/widget/bottomnav_widget.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,7 @@ class BottomMainNav extends StatelessWidget {
             //height: 48.h,
             width: MediaQuery.sizeOf(context).width.w,
             padding: const EdgeInsets.symmetric( horizontal: 0,vertical: 4),
-            decoration:  const BoxDecoration(color: Colors.black,borderRadius: BorderRadius.all(Radius.circular(32))
+            decoration:   BoxDecoration(color: Colors.black.withOpacity(0.75),borderRadius: BorderRadius.all(Radius.circular(32))
             ),
             child:
                 Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
@@ -30,11 +31,12 @@ class BottomMainNav extends StatelessWidget {
                 },
                
                 icons: value.pageIndex == 1
-                    ? Icons.search_outlined
-                    : Icons.search_rounded,
+                    ? "searchicon.svg"
+                    : "searchicon.svg",
+                iconColor:  Colors.white,
                 color: value.pageIndex == 1
-                    ? const Color(0xfffca717)
-                    : Colors.transparent
+                   ? AppColors.bottomBarActiveColor
+                    :AppColors.secondaryColor
                
               ),
                BottomNavWidget(
@@ -42,11 +44,11 @@ class BottomMainNav extends StatelessWidget {
                   value.pageIndex = 2;
                 },
                
-                icons:  Icons.chat_bubble,
+                icons:  "messageicon.svg",
                    
                 color: value.pageIndex == 2
-                ? const Color(0xfffca717)
-                    : Colors.transparent
+                ? AppColors.bottomBarActiveColor
+                    :AppColors.secondaryColor
                
               ),
           
@@ -55,10 +57,10 @@ class BottomMainNav extends StatelessWidget {
                   value.pageIndex = 0;
                 },
                
-                icons:  Icons.home_filled,
+                icons:  "homeicon.svg",
                 color: value.pageIndex == 0
-                   ? const Color(0xfffca717)
-                    : Colors.transparent
+                   ? AppColors.bottomBarActiveColor
+                    :AppColors.secondaryColor
                
               ),
                BottomNavWidget(
@@ -66,10 +68,10 @@ class BottomMainNav extends StatelessWidget {
                   value.pageIndex = 3;
                 },
                
-                icons:  Icons.favorite,
+                icons:  "hearticon.svg",
                 color: value.pageIndex == 3
-                   ? const Color(0xfffca717)
-                    : Colors.transparent
+                 ? AppColors.bottomBarActiveColor
+                    :AppColors.secondaryColor
                
               ),
                 BottomNavWidget(
@@ -77,10 +79,10 @@ class BottomMainNav extends StatelessWidget {
                   value.pageIndex = 4;
                 },
                
-                icons: Icons.person_4_rounded,
+                icons:"profileicon.svg",
                 color: value.pageIndex == 4
-                   ? const Color(0xfffca717)
-                    : Colors.transparent
+                   ? AppColors.bottomBarActiveColor
+                    :AppColors.secondaryColor
                
               ),
             ]),

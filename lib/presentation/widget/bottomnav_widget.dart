@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomNavWidget extends StatelessWidget {
   const BottomNavWidget(
@@ -12,7 +13,7 @@ class BottomNavWidget extends StatelessWidget {
       this.iconColor,
       this.iconSize});
   final void Function()? onTap;
-  final IconData icons;
+  final String icons;
 
   final Color color;
   final double? width, height;
@@ -36,8 +37,8 @@ class BottomNavWidget extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(32),
           child: Container(
-           height: 50,
-           width: 50,
+           height:height?? 50,
+           width:width?? 50,
             padding: const EdgeInsets.all(10),
             alignment: Alignment.center,
             decoration: const BoxDecoration(
@@ -46,10 +47,11 @@ class BottomNavWidget extends StatelessWidget {
              borderRadius: BorderRadius.all(Radius.circular(32)),
             ),
             child: Center(
-              child: Icon(
-                icons,
+              child: SvgPicture.asset(
+                "assets/svgs/$icons",
                 color:iconColor?? Colors.white,
-                size: iconSize,
+                width: iconSize,
+                height: iconSize,
               ),
             ),
           ),
@@ -86,24 +88,26 @@ class BottomWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.all(Radius.circular(16.r)),
-      splashColor: Colors.transparent,
-      splashFactory:
-          InkRipple.splashFactory,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(32),
-        child: Container(
-         
-          padding: const EdgeInsets.all(10),
-          alignment: Alignment.center,
-          decoration:  BoxDecoration(
-            color: Colors.white.withOpacity(0.4),
-           
-           borderRadius: BorderRadius.all(Radius.circular(32)),
+    return Material(
+      color: Colors.white.withOpacity(0.5),
+      borderRadius: BorderRadius.all(Radius.circular(32)),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.all(Radius.circular(16.r)),
+        splashColor: Colors.transparent,
+        splashFactory:InkRipple.splashFactory,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(32),
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            alignment: Alignment.center,
+            decoration:  BoxDecoration(
+             // color: Colors.white.withOpacity(0.4),
+             
+             borderRadius: BorderRadius.all(Radius.circular(32)),
+            ),
+            child: body
           ),
-          child: body
         ),
       ),
     );

@@ -38,6 +38,8 @@ dependencies:
   provider: ^6.1.2
   flutter_animate: ^4.5.0
   flutter_screenutil: ^5.9.1
+  popover: ^0.3.1
+  flutter_svg: ^2.0.10+1
 
 
 dev_dependencies:
@@ -91,16 +93,15 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   fonts:
-    - family: Lato
+    - family: Euclid Circular A
       fonts:
-        - asset: assets/fonts/Lato/Lato-Bold.ttf
-        - asset: assets/fonts/Lato/Lato-Thin.ttf
-        - asset: assets/fonts/Lato/Lato-Regular.ttf
-        - asset: assets/fonts/Lato/Lato-Light.ttf  
-        - asset: assets/fonts/Lato/Lato-BoldItalic.ttf 
-        - asset: assets/fonts/Lato/Lato-italic.ttf 
-        - asset: assets/fonts/Lato/Lato-Black.ttf 
-        - asset: assets/fonts/Lato/Lato-BlackItalic.ttf 
+       
+        - asset: assets/fonts/Euclid/Euclid Circular A Bold.ttf
+        - asset: assets/fonts/Euclid/Euclid Circular A Regular.ttf
+        - asset: assets/fonts/Euclid/Euclid Circular A SemiBold.ttf
+        - asset: assets/fonts/Euclid/Euclid Circular A Light.ttf
+        - asset: assets/fonts/Euclid/Euclid Circular A Medium.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
