@@ -24,7 +24,7 @@ class AnimationManager {
   void initializeAnimations(TickerProvider vsync) {
     controller = AnimationController(
       vsync: vsync,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
     );
 
     controllerImage = AnimationController(
@@ -45,7 +45,7 @@ class AnimationManager {
     );
 
     mainTextAnimation = Tween<double>(begin: 1, end: 0).animate(
-      CurvedAnimation(parent: controller, curve: const Interval(0, 0.5, curve: Curves.easeInOut)),
+      CurvedAnimation(parent: controller, curve: const Interval(0, 0.8, curve: Curves.easeInOut)),
     );
 
     countAnimation = Tween<double>(begin: initialCount.toDouble(), end: targetCount.toDouble()).animate(

@@ -157,16 +157,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                    height: 16,
                                 ),
                                 const SizedBox(width: 5,),
-                                Expanded(
-                                  child: Text(
-                                    'Saint Petersburg',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Colors.grey,
-                                        fontWeight:FontWeight.w500,
-                                        fontFamily: FontFamilyy.normal
-                                        ),
-                                  ),
+                                Text(
+                                  'Saint Petersburg',
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.grey,
+                                      fontWeight:FontWeight.w500,
+                                      fontFamily: FontFamilyy.normal
+                                      ),
                                 ),
                               ],
                             ),
@@ -663,7 +661,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         )
           ],
         ),
-        SizedBox(height: 50.h,)
+       SizedBox(height: 50.h,)
       ],
     );
   }
