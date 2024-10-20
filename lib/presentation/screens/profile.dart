@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:monipointproject/core/theme.dart';
 import 'package:monipointproject/presentation/widget/animationManager.dart';
 import 'package:monipointproject/presentation/widget/backdrop.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 class ReusePage extends StatefulWidget {
   const ReusePage({super.key});
@@ -127,16 +127,7 @@ class _ReusePageState extends State<ReusePage> with TickerProviderStateMixin {
                           padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 15), // Adjust the height of the container
                           decoration: BoxDecoration(
                             color: Colors.white,
-                          //    gradient: LinearGradient(
-                          //   colors: [
-                          //     Color(0xFFfffff).withOpacity(0.2),
-                          //     Color(0xFFfedbb1).withOpacity(0.2),
-                          //   ],
-                          //   begin: FractionalOffset(0.0, 0.0),
-                          //   end: FractionalOffset(1.0, 2.0),
-                          //   stops: [0.0, 1.0],
-                          //   tileMode: TileMode.mirror,
-                          // ),
+                        
                            boxShadow: [
                             BoxShadow(
                               color: Colors.white.withOpacity(0.01),
@@ -157,16 +148,14 @@ class _ReusePageState extends State<ReusePage> with TickerProviderStateMixin {
                                    height: 16,
                                 ),
                                 const SizedBox(width: 5,),
-                                Expanded(
-                                  child: Text(
-                                    'Saint Petersburg',
-                                    style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Colors.grey,
-                                        fontWeight:FontWeight.w500,
-                                        fontFamily: FontFamilyy.normal
-                                        ),
-                                  ),
+                                Text(
+                                  'Saint Petersburg',
+                                  style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: Colors.grey,
+                                      fontWeight:FontWeight.w500,
+                                      fontFamily: FontFamilyy.normal
+                                      ),
                                 ),
                               ],
                             ),
@@ -188,8 +177,7 @@ class _ReusePageState extends State<ReusePage> with TickerProviderStateMixin {
                                   const Color(0xffd75e0e),
                                   AppColors.primaryColor,
                                 ],
-                                // begin: FractionalOffset(0.0, 0.0),
-                                // end: FractionalOffset(1.0, 2.0),
+                                
                                 stops: [-8.0, 10.0],
                                 tileMode: TileMode.mirror,
                               ),
