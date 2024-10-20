@@ -20,9 +20,9 @@ class _TabscreenState extends State<Tabscreen>
   List<Widget> pageList = [
     const HomeScreen(),
     const SearchScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
-    const HomeScreen(),
+    const ReusePage(),
+    const ReusePage(),
+    const ReusePage(),
   ];
   @override
   void initState() {
